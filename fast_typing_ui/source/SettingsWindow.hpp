@@ -3,6 +3,8 @@
 #include <QMainWindow>
 #include <QScopedPointer>
 
+#include "ft_lib_global.h"
+
 namespace FT {
 namespace ui {
 
