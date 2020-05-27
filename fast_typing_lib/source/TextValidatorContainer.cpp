@@ -18,17 +18,17 @@ public:
         QString loginKey("login");
         QString loginValue("([A-Za-z](?:[A-Za-z0-9_]{0,49}))");
         assert(QRegExp(loginValue).isValid());
-        parent->addValidator(loginKey, loginValue);
+        cont.insert(loginKey, loginValue);
 
         QString emailKey("email");
         QString emailValue("([A-Za-z0-9_]+(\\.[A-Za-z0-9_])*\\.@[A-Za-z0-9_]+(\\.[A-Za-z0-9_])+)");
         assert(QRegExp(emailValue).isValid());
-        parent->addValidator(emailKey, emailValue);
+        cont.insert(emailKey, emailValue);
 
         QString passwordKey("password");
         QString passwordValue("((?:[A-za-z0-9\\$%\\^&\\*_\\.]){7,50})");
         assert(QRegExp(passwordValue).isValid());
-        parent->addValidator(passwordKey, passwordValue);
+        cont.insert(passwordKey, passwordValue);
     }
 
     TextValidatorContainer* parent;
