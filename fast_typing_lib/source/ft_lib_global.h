@@ -4,7 +4,7 @@
 #include <QtCore/qglobal.h>
 
 #if defined(FAST_TYPING_LIBRARY)
-#  define CMLIB_EXPORT Q_DECL_EXPORT
+#  define FT_LIB_EXPORT Q_DECL_EXPORT
 #else
-#  define CMLIB_EXPORT Q_DECL_IMPORT
+#  define FT_LIB_EXPORT Q_DECL_IMPORT
 #endif
