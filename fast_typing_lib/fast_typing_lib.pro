@@ -15,10 +15,12 @@ DEFINES = FAST_TYPING_LIBRARY
 
 HEADERS += \
     source/DatabaseModel.hpp \
+    source/TextValidatorContainer.hpp \
     source/ft_lib_global.h
 
 SOURCES += \
-    source/DatabaseModel.cpp
+    source/DatabaseModel.cpp \
+    source/TextValidatorContainer.cpp
 
 LIBS += -L"D:/Projects/Qt/type_list/binaries/windows/gcc/x86/debug" -ltl_lib
 
