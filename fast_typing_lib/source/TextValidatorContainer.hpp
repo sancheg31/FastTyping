@@ -3,10 +3,12 @@
 #include <QScopedPointer>
 #include <QRegExp>
 
+#include "ft_lib_global.h"
+
 namespace FT {
 namespace data {
 
-class TextValidatorContainer
+class FT_LIB_EXPORT TextValidatorContainer
 {
     Q_DISABLE_COPY_MOVE(TextValidatorContainer)
 public:

@@ -15,7 +15,7 @@ class QSqlQuery;
 namespace FT {
 namespace data {
 
-    class CMLIB_EXPORT DatabaseModel
+    class FT_LIB_EXPORT DatabaseModel
     {
     public:
 
@@ -40,8 +40,6 @@ namespace data {
         static QScopedPointer<Implementation> impl;
         static DatabaseModel* pinstance;
         static bool destroyed;
-
-
 
         static void create();
         static void onDeadReference();
