@@ -11,6 +11,8 @@
 #include "VerticalInputBox.hpp"
 #include "TextValidatorContainer.hpp"
 
+#include "controllers/AccountController.hpp"
+
 namespace FT {
 namespace ui {
 
@@ -22,16 +24,24 @@ public:
         titleLabel->setFont(QFont("Arial", 48, 2));
         titleLabel->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
 
+
+        QPalette p = incorrectDataLabel->palette();
+        p.setColor(incorrectDataLabel->foregroundRole(), Qt::red);
+        incorrectDataLabel->setPalette(p);
+        incorrectDataLabel->setWordWrap(true);
+
         loginBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
+        loginBox->line()->setText(parent->controller->login());
         auto sizePolicy = loginBox->sizePolicy();
 
         passwordBox->setSizePolicy(sizePolicy);
         passwordBox->line()->setEchoMode(QLineEdit::Password);
+        passwordBox->line()->setText(parent->controller->password());
 
         confirmButton->setSizePolicy(sizePolicy);
         confirmButton->setFixedSize(150, 30);
 
-        QObject::connect(confirmButton, &QPushButton::clicked, parent, &LoginWindow::mainState);
+        QObject::connect(confirmButton, SIGNAL(clicked()), parent, SLOT(slotConfirmClicked()));
         QObject::connect(registerButton, &QPushButton::clicked, parent, &LoginWindow::registerState);
     }
 
@@ -53,7 +63,18 @@ public:
 
 };
 
-LoginWindow::LoginWindow(QWidget *parent): QMainWindow(parent) {
+void LoginWindow::slotConfirmClicked() {
+    bool loaded = controller->loadAccountData(impl->loginBox->line()->text(),
+                                impl->passwordBox->line()->text());
+    if (!loaded) {
+        impl->incorrectDataLabel->setText("incorrect login or password");
+    } else {
+        emit mainState();
+    }
+}
+
+LoginWindow::LoginWindow(controllers::AccountController* cont,
+                         QWidget *parent): QMainWindow(parent), controller(cont) {
     impl.reset(new Implementation(this));
 
 
@@ -95,6 +116,8 @@ LoginWindow::LoginWindow(QWidget *parent): QMainWindow(parent) {
 }
 
 /*virtual*/ LoginWindow::~LoginWindow() { }
+
+
 
 
 } //ui

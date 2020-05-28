@@ -24,7 +24,6 @@ class AccountWindow::Implementation
 public:
     Implementation(AccountWindow* obj): parent(obj) {
 
-        parent->controller->loadAccountData("onono", "1234567");
         loginBox->line()->setText(parent->controller->login());
         emailBox->line()->setText(parent->controller->email());
         passwordBox->line()->setText(parent->controller->password());
