@@ -40,8 +40,10 @@ AccountController::AccountController(QObject* parent): QObject(parent) {
 AccountController::~AccountController() { }
 
 bool AccountController::loadAccountData(const QString& login, const QString& password) {
-    if (!impl->accountExists(login, password))
+    if (!impl->accountExists(login, password)) {
+        qDebug() << "account doesn't exist with data: \n\t" << login << "\n\t" << password;
         return false;
+    }
     QString query = QString("SELECT id, email FROM Account "
                                  "WHERE Account.login = \"%1\" "
                                  "AND Account.password = \"%2\"").arg(login).arg(password);
@@ -52,6 +54,7 @@ bool AccountController::loadAccountData(const QString& login, const QString& pas
         return false;
     }
 
+    int tempId = impl->accountId;
     impl->accountId = qvariant_cast<int>(list[0][0]);
     impl->email = qvariant_cast<QString>(list[0][1]);
     impl->login = login;
@@ -61,19 +64,9 @@ bool AccountController::loadAccountData(const QString& login, const QString& pas
              << impl->email << ' '
              << password;
 
+    emit accountIdChanged(impl->accountId, tempId);
+
     return true;
-}
-
-QString AccountController::login() const {
-    return impl->login;
-}
-
-QString AccountController::email() const {
-    return impl->email;
-}
-
-QString AccountController::password() const {
-    return impl->password;
 }
 
 bool AccountController::updateLogin(const QString& login) {
@@ -126,6 +119,23 @@ bool AccountController::updatePassword(const QString& password) {
     emit loginChanged(password, temp);
     return true;
 }
+
+QString AccountController::login() const {
+    return impl->login;
+}
+
+QString AccountController::email() const {
+    return impl->email;
+}
+
+QString AccountController::password() const {
+    return impl->password;
+}
+
+int AccountController::accountId() const {
+    return impl->accountId;
+}
+
 
 
 } //controllers

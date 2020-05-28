@@ -15,6 +15,7 @@ class FT_LIB_EXPORT AccountController : public QObject
     Q_PROPERTY(QString ui_login READ login WRITE updateLogin NOTIFY loginChanged)
     Q_PROPERTY(QString ui_email READ email WRITE updateEmail NOTIFY emailChanged)
     Q_PROPERTY(QString ui_password READ password WRITE updatePassword NOTIFY passwordChanged)
+    Q_PROPERTY(int ui_account_id READ accountId)
 
 public:
     explicit AccountController(QObject *parent = nullptr);
@@ -26,6 +27,8 @@ public:
     QString email() const;
     QString password() const;
 
+    int accountId() const;
+
     bool updateLogin(const QString& login);
     bool updateEmail(const QString& email);
     bool updatePassword(const QString& password);
@@ -34,6 +37,7 @@ signals:
     void loginChanged(const QString& newl, const QString& oldl);
     void emailChanged(const QString& newe, const QString& olde);
     void passwordChanged(const QString& newp, const QString& oldp);
+    void accountIdChanged(int newacc, int oldacc);
 
 private:
 
