@@ -5,6 +5,7 @@
 
 #include "VerticalInputBox.hpp"
 #include "TextValidatorContainer.hpp"
+#include "controllers/RegistrationController.hpp"
 
 
 namespace FT {
@@ -17,6 +18,10 @@ public:
         titleLabel->setFont(QFont("Arial", 48, 2));
         titleLabel->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
 
+        QPalette palette = incorrectData->palette();
+        palette.setColor(incorrectData->foregroundRole(), Qt::red);
+        incorrectData->setPalette(palette);
+        incorrectData->setWordWrap(true);
 
         loginBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
         auto sizePolicy = loginBox->sizePolicy();
@@ -32,7 +37,6 @@ public:
         confirmPasswordBox->line()->setMaxLength(50);
         confirmPasswordBox->line()->setEchoMode(QLineEdit::Password);
         confirmPasswordBox->setSizePolicy(sizePolicy);
-
 
         confirmRegButton->setSizePolicy(sizePolicy);
         confirmRegButton->setFixedSize(150, 30);
@@ -69,7 +73,8 @@ public:
 };
 
 
-RegistrationWindow::RegistrationWindow(QWidget* parent): QMainWindow(parent) {
+RegistrationWindow::RegistrationWindow(controllers::RegistrationController* cont,
+                                       QWidget* parent): QMainWindow(parent), controller(cont) {
     impl.reset(new Implementation(this));
 
     QVBoxLayout* l = new QVBoxLayout();
@@ -112,13 +117,31 @@ RegistrationWindow::RegistrationWindow(QWidget* parent): QMainWindow(parent) {
 
 /*virtual*/ RegistrationWindow::~RegistrationWindow() { }
 
-bool RegistrationWindow::isDataValid() const {
-    return false;
-}
-
 void RegistrationWindow::slotConfirmButtonClicked() {
-    //if (isDataValid())
-        emit loginState();
+
+    if (!controller->isLoginUnique(impl->loginBox->line()->text())) {
+        impl->incorrectData->setText("Login is used");
+    } else if (!controller->isEmailUnique(impl->emailBox->line()->text())) {
+        impl->incorrectData->setText("E-mail already registered");
+    } else if (impl->passwordBox->line()->text().length() <= 6) {
+        impl->incorrectData->setText("Password is not long enough");
+    } else if (impl->passwordBox->line()->text() != impl->confirmPasswordBox->line()->text()) {
+        impl->incorrectData->setText("confirm password doesn't match primary password");
+    } else if (impl->loginBox->line()->text().isEmpty()) {
+        impl->incorrectData->setText("Input login");
+    } else if (impl->emailBox->line()->text().isEmpty()) {
+        impl->incorrectData->setText("Input email");
+    } else {
+        int created =  controller->createAccount(impl->loginBox->line()->text(),
+                                  impl->emailBox->line()->text(),
+                                  impl->passwordBox->line()->text());
+        if (created == -1)
+            impl->incorrectData->setText("Incorrect data");
+        else {
+            emit loginState(impl->loginBox->line()->text(),
+                        impl->passwordBox->line()->text());
+        }
+    }
 }
 
 void RegistrationWindow::slotLoginButtonClicked() {
