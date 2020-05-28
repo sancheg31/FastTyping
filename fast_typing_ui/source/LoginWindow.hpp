@@ -10,7 +10,7 @@ class LoginWindow : public QMainWindow
     Q_OBJECT
     Q_DISABLE_COPY_MOVE(LoginWindow)
 public:
-    explicit LoginWindow(QWidget *parent = nullptr);
+    LoginWindow(QWidget *parent = nullptr);
     virtual ~LoginWindow();
 
 signals:

@@ -9,7 +9,6 @@
 
 #include <algorithm>
 
-
 namespace FT {
 namespace ui {
 

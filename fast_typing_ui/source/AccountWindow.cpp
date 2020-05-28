@@ -126,10 +126,7 @@ void AccountWindow::toggleReadonly() {
     if (impl->loginBox->line()->isReadOnly()) {
         impl->saveState();
         impl->toggleReadOnly();
-    } else {
-
     }
-
 }
 
 void AccountWindow::slotDataChanged() {

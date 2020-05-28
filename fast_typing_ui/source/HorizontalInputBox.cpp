@@ -8,7 +8,8 @@ HorizontalInputBox::HorizontalInputBox(const QString& labelText, const QString& 
     InputBox(labelText, lineText, validator, parent), inLayout(new QHBoxLayout) {
     inLayout->addWidget(inLabel);
     inLayout->addWidget(inLine);
-    inLayout->setSpacing(2);
+    inLayout->setSpacing(0);
+    inLayout->setContentsMargins(0, 0, 0, 0);
     setLayout(inLayout);
 }
 

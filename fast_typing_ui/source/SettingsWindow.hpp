@@ -3,7 +3,6 @@
 #include <QMainWindow>
 #include <QScopedPointer>
 
-#include "ft_lib_global.h"
 
 namespace FT {
 namespace controllers {
@@ -46,10 +45,10 @@ private:
     QStringList readStyleData() const;
     QStringList readKeyboardData() const;
 
+    controllers::SettingsController* controller;
+
     class Implementation;
     QScopedPointer<Implementation> impl;
-
-    controllers::SettingsController* controller;
 };
 
 } //ui

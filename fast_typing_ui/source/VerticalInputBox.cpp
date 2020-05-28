@@ -10,7 +10,8 @@ VerticalInputBox::VerticalInputBox(const QString& labelText, const QString& line
     InputBox(labelText, lineText, validator, parent), inLayout(new QVBoxLayout) {
     inLayout->addWidget(inLabel);
     inLayout->addWidget(inLine);
-    inLayout->setSpacing(2);
+    inLayout->setSpacing(0);
+    inLayout->setContentsMargins(0, 0, 0, 0);
     setLayout(inLayout);
 }
 

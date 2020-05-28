@@ -2,6 +2,7 @@
 
 #include <QMainWindow>
 
+
 namespace FT {
 namespace controllers {
 
