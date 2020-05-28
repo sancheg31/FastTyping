@@ -26,9 +26,9 @@ public:
     QString email() const;
     QString password() const;
 
-    void updateLogin(const QString& login);
-    void updateEmail(const QString& email);
-    void updatePassword(const QString& password);
+    bool updateLogin(const QString& login);
+    bool updateEmail(const QString& email);
+    bool updatePassword(const QString& password);
 
 signals:
     void loginChanged(const QString& newl, const QString& oldl);

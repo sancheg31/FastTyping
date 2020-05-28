@@ -56,7 +56,7 @@ bool AccountController::loadAccountData(const QString& login, const QString& pas
     impl->email = qvariant_cast<QString>(list[0][1]);
     impl->login = login;
     impl->password = password;
-    qDebug() << impl->accountId << ' '
+    qDebug() << "values are: " << impl->accountId << ' '
              << impl->login << ' '
              << impl->email << ' '
              << password;
@@ -76,37 +76,55 @@ QString AccountController::password() const {
     return impl->password;
 }
 
-void AccountController::updateLogin(const QString& login) {
+bool AccountController::updateLogin(const QString& login) {
     if (login == impl->login)
-        return;
-    QString statement = "UPDATE login = :login WHERE id = :id";
+        return false;
+
+    QString statement = "UPDATE Account SET login = :login WHERE id = :id";
     QVariantMap map{{":login", login}, {":id", impl->accountId}};
-    data::DatabaseModel::instance().updateRow(statement, map);
+
+    bool executed = data::DatabaseModel::instance().updateRow(statement, map);
+    if (!executed)
+        return false;
+
     QString temp = std::move(impl->login);
     impl->login = login;
     emit loginChanged(login, temp);
+    return true;
 }
 
-void AccountController::updateEmail(const QString& email) {
+bool AccountController::updateEmail(const QString& email) {
     if (email == impl->email)
-        return;
-    QString statement = "UPDATE email = :email WHERE id = :id";
+        return false;
+
+    QString statement = "UPDATE Account SET email = :email WHERE id = :id";
     QVariantMap map{{":email", email}, {":id", impl->accountId}};
-    data::DatabaseModel::instance().updateRow(statement, map);
+
+    bool executed = data::DatabaseModel::instance().updateRow(statement, map);
+    if (!executed)
+        return false;
+
     QString temp = std::move(impl->email);
     impl->email = email;
     emit emailChanged(email, temp);
+    return true;
 }
 
-void AccountController::updatePassword(const QString& password) {
+bool AccountController::updatePassword(const QString& password) {
     if (password == impl->password)
-        return;
-    QString statement = "UPDATE password = :password WHERE id = :id";
+        return false;
+
+    QString statement = "UPDATE Account SET password = :password WHERE id = :id";
     QVariantMap map{{":password", password}, {":id", impl->accountId}};
-    data::DatabaseModel::instance().updateRow(statement, map);
+
+    bool executed = data::DatabaseModel::instance().updateRow(statement, map);
+    if (!executed)
+        return false;
+
     QString temp = std::move(impl->password);
     impl->password = password;
     emit loginChanged(password, temp);
+    return true;
 }
 
 
