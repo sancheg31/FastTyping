@@ -27,6 +27,9 @@ private slots:
     void toggleReadonly();
     void slotDataChanged();
 
+signals:
+    void accountDataChanged();
+
 private:
     class Implementation;
     QScopedPointer<Implementation> impl;

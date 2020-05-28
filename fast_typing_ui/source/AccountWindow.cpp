@@ -24,6 +24,11 @@ class AccountWindow::Implementation
 public:
     Implementation(AccountWindow* obj): parent(obj) {
 
+        parent->controller->loadAccountData("onono", "1234567");
+        loginBox->line()->setText(parent->controller->login());
+        emailBox->line()->setText(parent->controller->email());
+        passwordBox->line()->setText(parent->controller->password());
+
         titleLabel->setFont(QFont("Calibri", 20, 4, 0));
         titleLabel->setWordWrap(true);
         titleLabel->setAlignment(Qt::AlignCenter);
@@ -32,15 +37,15 @@ public:
         loginBox->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         auto sizePolicy = loginBox->sizePolicy();
         loginBox->line()->setReadOnly(true);
-        loginBox->line()->setFixedSize(200, 25);
+        loginBox->line()->setFixedSize(400, 25);
 
         emailBox->setSizePolicy(sizePolicy);
         emailBox->line()->setReadOnly(true);
-        emailBox->line()->setFixedSize(200, 25);
+        emailBox->line()->setFixedSize(400, 25);
 
         passwordBox->setSizePolicy(sizePolicy);
         passwordBox->line()->setReadOnly(true);
-        passwordBox->line()->setFixedSize(200, 25);
+        passwordBox->line()->setFixedSize(400, 25);
 
         editButton->setFixedSize(100, 25);
         saveButton->setFixedSize(100, 25);
@@ -56,13 +61,13 @@ public:
 
     QLabel* incorrectDataLabel{new QLabel()};
 
-    VerticalInputBox* loginBox{new VerticalInputBox(tr("login:"), parent->controller->login(),
+    VerticalInputBox* loginBox{new VerticalInputBox(tr("login:"), "",
                                 data::TextValidatorContainer::getValidator("login"))};
 
-    VerticalInputBox* emailBox{new VerticalInputBox(tr("email:"), parent->controller->email(),
+    VerticalInputBox* emailBox{new VerticalInputBox(tr("email:"), "",
                                 data::TextValidatorContainer::getValidator("email"))};
 
-    VerticalInputBox* passwordBox{new VerticalInputBox(tr("password:"), parent->controller->password(),
+    VerticalInputBox* passwordBox{new VerticalInputBox(tr("password:"), "",
                                 data::TextValidatorContainer::getValidator("password"))};
 
     QPushButton* editButton{new QPushButton("Edit")};
@@ -93,22 +98,25 @@ AccountWindow::AccountWindow(controllers::AccountController* cont,
                              QWidget* parent): QMainWindow(parent), controller(cont) {
 
     impl.reset(new Implementation(this));
-    controller->loadAccountData("sancheg31", "Computer784");
 
     QVBoxLayout* mainl = new QVBoxLayout();
 
     mainl->addWidget(impl->titleLabel, Qt::AlignCenter);
     mainl->addWidget(impl->incorrectDataLabel, Qt::AlignLeft);
     mainl->addWidget(impl->loginBox, Qt::AlignLeft);
+    impl->loginBox->layout()->setSpacing(4);
     mainl->addWidget(impl->emailBox, Qt::AlignLeft);
+    impl->emailBox->layout()->setSpacing(4);
     mainl->addWidget(impl->passwordBox, Qt::AlignLeft);
+    impl->passwordBox->layout()->setSpacing(4);
     mainl->setSizeConstraint(QLayout::SetFixedSize);
+    mainl->setSpacing(6);
 
     QHBoxLayout* buttonl = new QHBoxLayout();
     buttonl->addWidget(impl->saveButton);
     buttonl->addWidget(impl->editButton);
     buttonl->setSizeConstraint(QLayout::SetFixedSize);
-    buttonl->setSpacing(2);
+    buttonl->setSpacing(6);
     buttonl->setContentsMargins(0, 0, 0, 0);
 
     QWidget* dummy = new QWidget();
@@ -133,6 +141,27 @@ void AccountWindow::toggleReadonly() {
 
 void AccountWindow::slotDataChanged() {
     impl->toggleReadOnly();
+    bool changed = false;
+    if (impl->loginBox->line()->text() != impl->oldLogin) {
+        qDebug() << "old login: " << impl->oldLogin <<
+                    "new login: " << impl->loginBox->line()->text();
+        controller->updateLogin(impl->loginBox->line()->text());
+        changed = true;
+    }
+    if (impl->emailBox->line()->text() != impl->oldEmail) {
+        qDebug() << "old email: " << impl->oldEmail <<
+                    "new email: " << impl->emailBox->line()->text();
+        controller->updateEmail(impl->emailBox->line()->text());
+        changed = true;
+    }
+    if (impl->passwordBox->line()->text() != impl->oldPassword) {
+        qDebug() << "old password: " << impl->oldPassword <<
+                    "new password: " << impl->passwordBox->line()->text();
+        controller->updatePassword(impl->passwordBox->line()->text());
+        changed = true;
+    }
+    if (changed)
+        emit accountDataChanged();
 }
 
 } //ui
