@@ -9,6 +9,7 @@
 #include "SettingsWindow.hpp"
 
 #include "controllers/SettingsController.hpp"
+#include "controllers/AccountController.hpp"
 
 namespace FT {
 namespace framework {
@@ -23,7 +24,7 @@ ui::RegistrationWindow* WindowFactory::createRegistrationWindow() {
 }
 
 ui::AccountWindow* WindowFactory::createAccountWindow() {
-    return new ui::AccountWindow(nullptr, nullptr);
+    return new ui::AccountWindow(new controllers::AccountController());
 }
 
 ui::ExerciseWindow* WindowFactory::createExerciseWindow() {
