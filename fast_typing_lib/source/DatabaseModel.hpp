@@ -23,9 +23,14 @@ public:
     static DatabaseModel& instance();
 
     std::optional<QList<QVariantList>> selectRows(const QString& statement) const;
-    std::optional<QVariantMap> insertRows(const QString& statement, const QVariantMap& values) const;
-    std::optional<QVariantMap> updateRows(const QString& statement, const QVariantMap& values) const;
-    std::optional<QVariantMap> deleteRows(const QString& statement) const;
+
+    void insertRow(const QString& statement, const QVariantMap& values) const;
+    void insertRow(const QString& statement);
+
+    void updateRow(const QString& statement, const QVariantMap& values) const;
+    void updateRow(const QString& statement);
+
+    void deleteRow(const QString& statement) const;
 
 private:
 

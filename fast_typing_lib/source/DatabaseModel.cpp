@@ -53,15 +53,7 @@ private:
 
 /*static*/ DatabaseModel::Implementation* DatabaseModel::impl{nullptr};
 
-/*static*/ FT::data::DatabaseModel& FT::data::DatabaseModel::instance() {
-    /*if (!pinstance) {
-        if (!destroyed) {
-            create();
-        } else {
-            onDeadReference();
-        }
-    }
-    return *pinstance;*/
+FT::data::DatabaseModel& FT::data::DatabaseModel::instance() {
     static DatabaseModel inst{};
     return inst;
 }
@@ -86,40 +78,77 @@ std::optional<QList<QVariantList>> DatabaseModel::selectRows(const QString& stat
     }
 
     query.finish();
-    return std::optional{result};
+    return result;
 }
 
-std::optional<QVariantMap> DatabaseModel::insertRows(const QString& statement, const QVariantMap& values) const {
+/*static*/ void DatabaseModel::insertRow(const QString& statement, const QVariantMap& values) const {
     QSqlQuery query(impl->database);
 
     if (!query.prepare(statement)) {
         qDebug() << "incorrect statement: " << statement;
-        return {};
+        return;
     }
 
-    QSqlRecord record = query.record();
     QStringList fieldNames = values.keys();
-    std::for_each(fieldNames.begin(), fieldNames.end(), [&values, &query, &record](const QString& name) {
-        int index = record.indexOf(name);
-        if (index == -1)
-            qDebug() << "key is not a column name: " << name;
-        else
-            query.bindValue(index, values.value(name), QSql::In);
+    std::for_each(fieldNames.begin(), fieldNames.end(), [&values, &query](const QString& name) {
+            query.bindValue(name, values.value(name), QSql::In);
     });
 
     if (!query.exec()) {
         qDebug() << "incorrect statement: " << statement;
-        return {};
+        return;
     }
-    return query.boundValues();
+    query.finish();
 }
 
-std::optional<QVariantMap> DatabaseModel::updateRows(const QString& statement, const QVariantMap& values) const {
-    return {};
+void DatabaseModel::insertRow(const QString& statement) {
+    QSqlQuery query(impl->database);
+
+    if (!query.prepare(statement) || !query.exec()) {
+        qDebug() << "incorrect statement: " << statement;
+        return;
+    }
+    query.finish();
 }
 
-std::optional<QVariantMap> DatabaseModel::deleteRows(const QString& statement) const {
-    return {};
+void DatabaseModel::updateRow(const QString& statement, const QVariantMap& values) const {
+    QSqlQuery query(impl->database);
+
+    if (!query.prepare(statement)) {
+        qDebug() << "incorrect statement: " << statement;
+        return;
+    }
+
+    QStringList fieldNames = values.keys();
+    std::for_each(fieldNames.begin(), fieldNames.end(), [&values, &query](const QString& name) {
+            query.bindValue(name, values.value(name), QSql::In);
+    });
+
+    if (!query.exec()) {
+        qDebug() << "incorrect statement: " << statement;
+        return;
+    }
+    query.finish();
+}
+
+void DatabaseModel::updateRow(const QString& statement) {
+    QSqlQuery query(impl->database);
+
+    if (!query.prepare(statement) || !query.exec()) {
+        qDebug() << "incorrect statement: " << statement;
+        return;
+    }
+    query.finish();
+}
+
+void DatabaseModel::deleteRow(const QString& statement) const {
+    QSqlQuery query(impl->database);
+
+    if (!query.prepare(statement) || !query.exec()) {
+        qDebug() << "incorrect statemtn: " << statement;
+        return;
+    }
+    query.finish();
 }
 
 FT::data::DatabaseModel::DatabaseModel() {
