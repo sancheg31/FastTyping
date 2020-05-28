@@ -22,6 +22,12 @@ public:
 
     int createAccount(const QString& login, const QString& email, const QString& password) const;
 private:
+
+    bool createAccountRecord(const QString& login, const QString& email,
+                             const QString& password, const QString& currentDate) const;
+    bool createAccountSettingsRecord(int id) const;
+    bool createAccountStatisticsRecord(int id) const;
+
     class Implementation;
     QScopedPointer<Implementation> impl;
 };
