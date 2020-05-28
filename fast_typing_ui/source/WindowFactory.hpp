@@ -11,6 +11,16 @@ class StatisticsWindow;
 
 }
 
+namespace FT::controllers {
+
+class RegistrationController;
+class AccountController;
+class ExerciseController;
+class SettingsController;
+class StatisticsController;
+
+}
+
 namespace FT {
 namespace framework {
 
@@ -21,12 +31,12 @@ public:
     WindowFactory();
     ~WindowFactory();
 
-    static ui::LoginWindow* createLoginWindow();
-    static ui::RegistrationWindow* createRegistrationWindow();
-    static ui::AccountWindow* createAccountWindow();
+    static ui::LoginWindow* createLoginWindow(controllers::AccountController* cont);
+    static ui::RegistrationWindow* createRegistrationWindow(controllers::RegistrationController*);
+    static ui::AccountWindow* createAccountWindow(controllers::AccountController*);
     static ui::ExerciseWindow* createExerciseWindow();
-    static ui::StatisticsWindow* createStatisticsWindow();
-    static ui::SettingsWindow* createSettingsWindow();
+    static ui::StatisticsWindow* createStatisticsWindow(controllers::StatisticsController*);
+    static ui::SettingsWindow* createSettingsWindow(controllers::SettingsController*);
 
 };
 

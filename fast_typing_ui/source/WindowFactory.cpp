@@ -10,32 +10,33 @@
 
 #include "controllers/SettingsController.hpp"
 #include "controllers/AccountController.hpp"
+#include "controllers/RegistrationController.hpp"
 
 namespace FT {
 namespace framework {
 
 
-ui::LoginWindow* WindowFactory::createLoginWindow() {
+ui::LoginWindow* WindowFactory::createLoginWindow(controllers::AccountController*) {
     return new ui::LoginWindow();
 }
 
-ui::RegistrationWindow* WindowFactory::createRegistrationWindow() {
-    return new ui::RegistrationWindow();
+ui::RegistrationWindow* WindowFactory::createRegistrationWindow(controllers::RegistrationController* cont) {
+    return new ui::RegistrationWindow(cont);
 }
 
-ui::AccountWindow* WindowFactory::createAccountWindow() {
-    return new ui::AccountWindow(new controllers::AccountController());
+ui::AccountWindow* WindowFactory::createAccountWindow(controllers::AccountController* cont) {
+    return new ui::AccountWindow(cont);
 }
 
 ui::ExerciseWindow* WindowFactory::createExerciseWindow() {
     return nullptr;
 }
 
-ui::StatisticsWindow* WindowFactory::createStatisticsWindow() {
-    return new ui::StatisticsWindow(nullptr);
+ui::StatisticsWindow* WindowFactory::createStatisticsWindow(controllers::StatisticsController* cont) {
+    return new ui::StatisticsWindow(cont);
 }
 
-ui::SettingsWindow* WindowFactory::createSettingsWindow() {
+ui::SettingsWindow* WindowFactory::createSettingsWindow(controllers::SettingsController*) {
     return new ui::SettingsWindow(new controllers::SettingsController);
 }
 
