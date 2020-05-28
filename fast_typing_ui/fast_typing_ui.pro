@@ -3,7 +3,7 @@ include(../qmake_target_platform.pri)
 include(../qmake_destination_path.pri)
 
 CONFIG += c++17 qt link_prl
-QT += sql core gui widgets
+QT += sql core gui widgets charts
 
 
 TEMPLATE = app
@@ -13,6 +13,7 @@ INCLUDEPATH += source
 INCLUDEPATH += ../fast_typing_lib/source
 
 SOURCES += \
+    source/ExerciseTypePieChart.cpp \
     source/AccountWindow.cpp \
     source/HorizontalInputBox.cpp \
     source/InputBox.cpp \
@@ -26,6 +27,7 @@ SOURCES += \
     source/main.cpp
 
 HEADERS += \
+    source/ExerciseTypePieChart.hpp \
     source/AccountWindow.hpp \
     source/HorizontalInputBox.hpp \
     source/InputBox.hpp \

@@ -19,6 +19,7 @@ HEADERS += \
     source/controllers/AccountController.hpp \
     source/controllers/RegistrationController.hpp \
     source/controllers/SettingsController.hpp \
+    source/controllers/StatisticsController.hpp \
     source/ft_lib_global.h
 
 SOURCES += \
@@ -26,7 +27,8 @@ SOURCES += \
     source/TextValidatorContainer.cpp \
     source/controllers/AccountController.cpp \
     source/controllers/RegistrationController.cpp \
-    source/controllers/SettingsController.cpp
+    source/controllers/SettingsController.cpp \
+    source/controllers/StatisticsController.cpp
 
 LIBS += -L"D:/Projects/Qt/type_list/binaries/windows/gcc/x86/debug" -ltl_lib
 

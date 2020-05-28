@@ -5,6 +5,7 @@
 #include "controllers/RegistrationController.hpp"
 #include "controllers/AccountController.hpp"
 #include "controllers/SettingsController.hpp"
+#include "controllers/StatisticsController.hpp"
 
 #include <QTabWidget>
 #include <QDebug>
@@ -53,6 +54,7 @@ void MainWindow::slotLoginWindow(const QString& login, const QString& password) 
 void MainWindow::slotMainWindow() {
 
     settingsController = new SettingsController(accountController);
+    statController = new StatisticsController(accountController);
 
     QTabWidget* mainw = new QTabWidget();
     mainw->setMovable(true);
