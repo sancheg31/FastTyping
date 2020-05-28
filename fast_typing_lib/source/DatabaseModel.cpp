@@ -68,7 +68,7 @@ std::optional<QList<QVariantList>> DatabaseModel::selectRows(const QString& stat
     }
 
     std::size_t colsCount = query.record().count();
-    QList<QVariantList> result;
+    QList<QVariantList> result{};
 
     while (query.next()) {
         QVariantList item;
@@ -81,12 +81,12 @@ std::optional<QList<QVariantList>> DatabaseModel::selectRows(const QString& stat
     return result;
 }
 
-/*static*/ void DatabaseModel::insertRow(const QString& statement, const QVariantMap& values) const {
+bool DatabaseModel::insertRow(const QString& statement, const QVariantMap& values) const {
     QSqlQuery query(impl->database);
 
     if (!query.prepare(statement)) {
         qDebug() << "incorrect statement: " << statement;
-        return;
+        return false;
     }
 
     QStringList fieldNames = values.keys();
@@ -96,27 +96,28 @@ std::optional<QList<QVariantList>> DatabaseModel::selectRows(const QString& stat
 
     if (!query.exec()) {
         qDebug() << "incorrect statement: " << statement;
-        return;
+        return false;
     }
     query.finish();
+    return true;
 }
 
-void DatabaseModel::insertRow(const QString& statement) {
+bool DatabaseModel::insertRow(const QString& statement) {
     QSqlQuery query(impl->database);
 
     if (!query.prepare(statement) || !query.exec()) {
         qDebug() << "incorrect statement: " << statement;
-        return;
+        return false;
     }
     query.finish();
+    return true;
 }
-
-void DatabaseModel::updateRow(const QString& statement, const QVariantMap& values) const {
+bool DatabaseModel::updateRow(const QString& statement, const QVariantMap& values) const {
     QSqlQuery query(impl->database);
 
     if (!query.prepare(statement)) {
         qDebug() << "incorrect statement: " << statement;
-        return;
+        return false;
     }
 
     QStringList fieldNames = values.keys();
@@ -126,19 +127,21 @@ void DatabaseModel::updateRow(const QString& statement, const QVariantMap& value
 
     if (!query.exec()) {
         qDebug() << "incorrect statement: " << statement;
-        return;
+        return false;
     }
     query.finish();
+    return true;
 }
 
-void DatabaseModel::updateRow(const QString& statement) {
+bool DatabaseModel::updateRow(const QString& statement) {
     QSqlQuery query(impl->database);
 
     if (!query.prepare(statement) || !query.exec()) {
         qDebug() << "incorrect statement: " << statement;
-        return;
+        return false;
     }
     query.finish();
+    return true;
 }
 
 void DatabaseModel::deleteRow(const QString& statement) const {

@@ -24,11 +24,11 @@ public:
 
     std::optional<QList<QVariantList>> selectRows(const QString& statement) const;
 
-    void insertRow(const QString& statement, const QVariantMap& values) const;
-    void insertRow(const QString& statement);
+    bool insertRow(const QString& statement, const QVariantMap& values) const;
+    bool insertRow(const QString& statement);
 
-    void updateRow(const QString& statement, const QVariantMap& values) const;
-    void updateRow(const QString& statement);
+    bool updateRow(const QString& statement, const QVariantMap& values) const;
+    bool updateRow(const QString& statement);
 
     void deleteRow(const QString& statement) const;
 
