@@ -116,7 +116,7 @@ SettingsController::SettingsController() {
     impl.reset(new Implementation(this));
 }
 
-SettingsController::~SettingsController() { }
+/*virtual*/ SettingsController::~SettingsController() { }
 
 
 } //controllers

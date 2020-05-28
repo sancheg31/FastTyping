@@ -21,7 +21,7 @@ class FT_LIB_EXPORT SettingsController: public QObject
 
 public:
     SettingsController();
-    ~SettingsController();
+    virtual ~SettingsController() override;
 
     QString currentStyle() const;
     QString currentLayout() const;
