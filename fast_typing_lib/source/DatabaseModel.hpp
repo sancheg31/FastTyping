@@ -33,17 +33,12 @@ private:
     virtual ~DatabaseModel();
 
     class Implementation;
-    static QScopedPointer<Implementation> impl;
-    static DatabaseModel* pinstance;
-    static bool destroyed;
-
-    static void create();
-    static void onDeadReference();
+    static Implementation* impl;
 
 };
 
 
 
 } //data
-} //ft
+} //FT
 

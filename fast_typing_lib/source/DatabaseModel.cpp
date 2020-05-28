@@ -16,7 +16,7 @@ namespace data {
 class DatabaseModel::Implementation
 {
 public:
-    Implementation(DatabaseModel* model): dbModel(model) {
+    Implementation() {
         database = QSqlDatabase::addDatabase(dbType, dbConnectionName);
         database.setDatabaseName(dbName);
         database.open();
@@ -29,7 +29,6 @@ public:
         QSqlDatabase::removeDatabase(dbConnectionName);
     }
 
-    DatabaseModel* dbModel;
     QSqlDatabase database;
 
     const char* dbConnectionName{"fast_typing_db"};
@@ -51,19 +50,19 @@ private:
     }
 };
 
-/*static*/ QScopedPointer<DatabaseModel::Implementation> DatabaseModel::impl{};
-/*static*/ DatabaseModel* DatabaseModel::pinstance{nullptr};
-/*static*/ bool DatabaseModel::destroyed{false};
+/*static*/ DatabaseModel::Implementation* DatabaseModel::impl{nullptr};
 
 /*static*/ FT::data::DatabaseModel& FT::data::DatabaseModel::instance() {
-    if (!pinstance) {
+    /*if (!pinstance) {
         if (!destroyed) {
             create();
         } else {
             onDeadReference();
         }
     }
-    return *pinstance;
+    return *pinstance;*/
+    static DatabaseModel inst{};
+    return inst;
 }
 
 std::optional<QList<QVariantList>> DatabaseModel::selectRows(const QString& statement) const {
@@ -71,6 +70,7 @@ std::optional<QList<QVariantList>> DatabaseModel::selectRows(const QString& stat
     query.setForwardOnly(true);
 
     if (!query.prepare(statement) || !query.exec()) {
+        qDebug() << "incorrect statement: " << statement;
         return {};
     }
 
@@ -88,24 +88,24 @@ std::optional<QList<QVariantList>> DatabaseModel::selectRows(const QString& stat
     return std::optional{result};
 }
 
+std::optional<QVariantMap> DatabaseModel::insertRows(const QString& statement, const QVariantMap& values) const {
+    return {};
+}
+
+std::optional<QVariantMap> DatabaseModel::updateRows(const QString& statement, const QVariantMap& values) const {
+    return {};
+}
+
+std::optional<QVariantMap> DatabaseModel::deleteRows(const QString& statement) const {
+    return {};
+}
+
 FT::data::DatabaseModel::DatabaseModel() {
-    impl.reset(new Implementation(this));
+    impl = new Implementation();
 }
 
-FT::data::DatabaseModel::~DatabaseModel() {
-    delete pinstance;
-    destroyed = true;
-}
+FT::data::DatabaseModel::~DatabaseModel() { }
 
-
-/*static*/ void FT::data::DatabaseModel::create() {
-    static DatabaseModel instance_;
-    pinstance = &instance_;
-}
-
-/*static*/ void FT::data::DatabaseModel::onDeadReference() {
-    throw std::runtime_error("Dangling reference in DatabaseModel");
-}
 
 
 } //data
