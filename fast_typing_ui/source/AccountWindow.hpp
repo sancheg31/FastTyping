@@ -6,8 +6,7 @@
 namespace FT {
 namespace controllers {
 
-class AccountInController;
-class AccountOutController;
+class AccountController;
 
 } //controllers
 } //FT
@@ -21,21 +20,18 @@ class AccountWindow : public QMainWindow
     Q_OBJECT
     Q_DISABLE_COPY_MOVE(AccountWindow)
 public:
-    AccountWindow(controllers::AccountInController*,
-                  controllers::AccountOutController*, QWidget *parent = nullptr);
+    AccountWindow(controllers::AccountController*, QWidget *parent = nullptr);
     virtual ~AccountWindow() override;
 
 private slots:
     void toggleReadonly();
-
     void slotDataChanged();
 
 private:
     class Implementation;
     QScopedPointer<Implementation> impl;
 
-    controllers::AccountInController* inController;
-    controllers::AccountOutController* outController;
+    controllers::AccountController* controller;
 };
 
 

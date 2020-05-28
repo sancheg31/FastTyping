@@ -11,6 +11,8 @@
 
 #include "VerticalInputBox.hpp"
 #include "HorizontalInputBox.hpp"
+
+#include "controllers/AccountController.hpp"
 #include "TextValidatorContainer.hpp"
 
 namespace FT {
@@ -54,13 +56,13 @@ public:
 
     QLabel* incorrectDataLabel{new QLabel()};
 
-    VerticalInputBox* loginBox{new VerticalInputBox(tr("login:"), "",
+    VerticalInputBox* loginBox{new VerticalInputBox(tr("login:"), parent->controller->login(),
                                 data::TextValidatorContainer::getValidator("login"))};
 
-    VerticalInputBox* emailBox{new VerticalInputBox(tr("email:"), "",
+    VerticalInputBox* emailBox{new VerticalInputBox(tr("email:"), parent->controller->email(),
                                 data::TextValidatorContainer::getValidator("email"))};
 
-    VerticalInputBox* passwordBox{new VerticalInputBox(tr("password:"), "",
+    VerticalInputBox* passwordBox{new VerticalInputBox(tr("password:"), parent->controller->password(),
                                 data::TextValidatorContainer::getValidator("password"))};
 
     QPushButton* editButton{new QPushButton("Edit")};
@@ -87,10 +89,11 @@ public:
 };
 
 
-AccountWindow::AccountWindow(controllers::AccountInController* inc,
-                             controllers::AccountOutController* outc,
-                             QWidget* parent): QMainWindow(parent), inController(inc), outController(outc) {
+AccountWindow::AccountWindow(controllers::AccountController* cont,
+                             QWidget* parent): QMainWindow(parent), controller(cont) {
+
     impl.reset(new Implementation(this));
+    controller->loadAccountData("sancheg31", "Computer784");
 
     QVBoxLayout* mainl = new QVBoxLayout();
 
@@ -113,7 +116,6 @@ AccountWindow::AccountWindow(controllers::AccountInController* inc,
 
     mainl->addWidget(dummy, Qt::AlignLeft);
     mainl->setContentsMargins(15, 15, 15, 30);
-
 
     QWidget* w = new QWidget();
     w->setLayout(mainl);

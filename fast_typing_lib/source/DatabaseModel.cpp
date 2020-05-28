@@ -7,6 +7,7 @@
 
 #include <QDebug>
 
+#include <algorithm>
 #include <exception>
 
 namespace FT {
@@ -89,7 +90,28 @@ std::optional<QList<QVariantList>> DatabaseModel::selectRows(const QString& stat
 }
 
 std::optional<QVariantMap> DatabaseModel::insertRows(const QString& statement, const QVariantMap& values) const {
-    return {};
+    QSqlQuery query(impl->database);
+
+    if (!query.prepare(statement)) {
+        qDebug() << "incorrect statement: " << statement;
+        return {};
+    }
+
+    QSqlRecord record = query.record();
+    QStringList fieldNames = values.keys();
+    std::for_each(fieldNames.begin(), fieldNames.end(), [&values, &query, &record](const QString& name) {
+        int index = record.indexOf(name);
+        if (index == -1)
+            qDebug() << "key is not a column name: " << name;
+        else
+            query.bindValue(index, values.value(name), QSql::In);
+    });
+
+    if (!query.exec()) {
+        qDebug() << "incorrect statement: " << statement;
+        return {};
+    }
+    return query.boundValues();
 }
 
 std::optional<QVariantMap> DatabaseModel::updateRows(const QString& statement, const QVariantMap& values) const {
