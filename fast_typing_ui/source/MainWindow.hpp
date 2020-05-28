@@ -2,6 +2,16 @@
 
 #include <QMainWindow>
 
+namespace FT::controllers {
+
+class RegistrationController;
+class AccountController;
+class ExerciseController;
+class SettingsController;
+class StatisticsController;
+
+}
+
 namespace FT {
 namespace ui {
 
@@ -16,6 +26,12 @@ public slots:
     void slotLoginWindow();
     void slotMainWindow();
 
+
+private:
+    controllers::RegistrationController* regController;
+    controllers::AccountController* accountController;
+    controllers::SettingsController* settingsController;
+    controllers::StatisticsController* statController;
 };
 
 } //ui

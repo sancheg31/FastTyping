@@ -2,19 +2,30 @@
 #include "MainWindow.hpp"
 #include "WindowFactory.hpp"
 
+#include "controllers/RegistrationController.hpp"
+#include "controllers/AccountController.hpp"
+#include "controllers/SettingsController.hpp"
+
 #include <QTabWidget>
 #include <QDebug>
 
+using namespace FT::controllers;
+using namespace FT::framework;
 namespace FT {
 namespace ui {
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
+    regController = new RegistrationController();
+    accountController = new AccountController();
+    settingsController = new SettingsController();
     slotLoginWindow();
 }
 
 void MainWindow::slotRegisterWindow() {
-    QMainWindow* regWindow = (QMainWindow*)framework::WindowFactory::createRegistrationWindow();
+    QMainWindow* regWindow = (QMainWindow*)
+                             WindowFactory::createRegistrationWindow(regController);
+
     setCentralWidget(regWindow);
     setFixedSize(regWindow->size());
     setWindowTitle(regWindow->windowTitle());
@@ -22,7 +33,7 @@ void MainWindow::slotRegisterWindow() {
 }
 
 void MainWindow::slotLoginWindow() {
-    QMainWindow* logWindow = (QMainWindow*)framework::WindowFactory::createLoginWindow();
+    QMainWindow* logWindow = (QMainWindow*)WindowFactory::createLoginWindow(nullptr);
     setCentralWidget(logWindow);
     setFixedSize(logWindow->size());
     setWindowTitle(logWindow->windowTitle());
@@ -34,10 +45,10 @@ void MainWindow::slotMainWindow() {
 
     QTabWidget* mainw = new QTabWidget();
     mainw->setMovable(true);
-    mainw->addTab((QMainWindow*)framework::WindowFactory::createAccountWindow(), tr("Account"));
-    mainw->addTab((QMainWindow*)framework::WindowFactory::createExerciseWindow(), tr("Exercise"));
-    mainw->addTab((QMainWindow*)framework::WindowFactory::createStatisticsWindow(), tr("Statistics"));
-    mainw->addTab((QMainWindow*)framework::WindowFactory::createSettingsWindow(), tr("Settings"));
+    mainw->addTab((QMainWindow*)WindowFactory::createAccountWindow(accountController), tr("Account"));
+    mainw->addTab((QMainWindow*)WindowFactory::createExerciseWindow(), tr("Exercise"));
+    mainw->addTab((QMainWindow*)WindowFactory::createStatisticsWindow(statController), tr("Statistics"));
+    mainw->addTab((QMainWindow*)WindowFactory::createSettingsWindow(settingsController), tr("Settings"));
 
     takeCentralWidget();
     setCentralWidget(mainw);
