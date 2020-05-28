@@ -27,6 +27,10 @@ private slots:
     void toggleReadonly();
     void slotDataChanged();
 
+    void slotLoginChanged(const QString& newLogin);
+    void slotEmailChanged(const QString& newEmail);
+    void slotPasswordChanged(const QString& newPassword);
+
 signals:
     void accountDataChanged();
 

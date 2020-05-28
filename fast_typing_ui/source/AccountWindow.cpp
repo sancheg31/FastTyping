@@ -24,7 +24,7 @@ class AccountWindow::Implementation
 public:
     Implementation(AccountWindow* obj): parent(obj) {
 
-        parent->controller->loadAccountData("onono", "Computer784");
+        parent->controller->loadAccountData("onono", "1234567");
         loginBox->line()->setText(parent->controller->login());
         emailBox->line()->setText(parent->controller->email());
         passwordBox->line()->setText(parent->controller->password());
@@ -49,6 +49,7 @@ public:
 
         editButton->setFixedSize(100, 25);
         saveButton->setFixedSize(100, 25);
+        saveButton->setDisabled(true);
 
         QObject::connect(editButton, SIGNAL(clicked()), parent, SLOT(toggleReadonly()));
         QObject::connect(saveButton, SIGNAL(clicked()), parent, SLOT(slotDataChanged()));
@@ -99,6 +100,10 @@ AccountWindow::AccountWindow(controllers::AccountController* cont,
 
     impl.reset(new Implementation(this));
 
+    connect(controller, SIGNAL(loginChanged(QString, QString)), this, SLOT(slotLoginChanged(QString)));
+    connect(controller, SIGNAL(emailChanged(QString, QString)), this, SLOT(slotEmailChanged(QString)));
+    connect(controller, SIGNAL(passwordChanged(QString, QString)), this, SLOT(slotPasswordChanged(QString)));
+
     QVBoxLayout* mainl = new QVBoxLayout();
 
     mainl->addWidget(impl->titleLabel, Qt::AlignCenter);
@@ -136,32 +141,71 @@ void AccountWindow::toggleReadonly() {
     if (impl->loginBox->line()->isReadOnly()) {
         impl->saveState();
         impl->toggleReadOnly();
+        impl->saveButton->setEnabled(true);
     }
 }
 
 void AccountWindow::slotDataChanged() {
+
     impl->toggleReadOnly();
     bool changed = false;
+
     if (impl->loginBox->line()->text() != impl->oldLogin) {
+
         qDebug() << "old login: " << impl->oldLogin <<
                     "new login: " << impl->loginBox->line()->text();
-        controller->updateLogin(impl->loginBox->line()->text());
-        changed = true;
+
+        bool updated = controller->updateLogin(impl->loginBox->line()->text());
+
+        if (!updated) {
+            impl->loginBox->line()->setText(impl->oldLogin);
+        }
+        changed = changed | updated;
+
     }
+
     if (impl->emailBox->line()->text() != impl->oldEmail) {
+
         qDebug() << "old email: " << impl->oldEmail <<
                     "new email: " << impl->emailBox->line()->text();
-        controller->updateEmail(impl->emailBox->line()->text());
-        changed = true;
+
+        bool updated = controller->updateEmail(impl->emailBox->line()->text());
+        if (!updated) {
+            impl->emailBox->line()->setText(impl->oldEmail);
+        }
+        changed = changed | updated;
     }
     if (impl->passwordBox->line()->text() != impl->oldPassword) {
+
         qDebug() << "old password: " << impl->oldPassword <<
                     "new password: " << impl->passwordBox->line()->text();
-        controller->updatePassword(impl->passwordBox->line()->text());
-        changed = true;
+
+        bool updated = controller->updatePassword(impl->passwordBox->line()->text());
+
+        if (!updated) {
+            impl->passwordBox->line()->setText(impl->oldPassword);
+        }
+        changed = changed | updated;
     }
+
     if (changed)
         emit accountDataChanged();
+    impl->saveButton->setDisabled(true);
+}
+
+void AccountWindow::slotLoginChanged(const QString& newLogin) {
+    impl->oldLogin = newLogin;
+    impl->loginBox->line()->setText(newLogin);
+}
+
+void AccountWindow::slotEmailChanged(const QString& newEmail) {
+    impl->oldEmail = newEmail;
+    impl->emailBox->line()->setText(newEmail);
+}
+
+void AccountWindow::slotPasswordChanged(const QString& newPassword) {
+    impl->oldPassword = newPassword;
+    impl->passwordBox->line()->setText(newPassword);
 }
 
 } //ui
