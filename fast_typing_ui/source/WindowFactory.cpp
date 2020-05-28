@@ -26,6 +26,10 @@ ui::AccountWindow* WindowFactory::createAccountWindow() {
     return new ui::AccountWindow(nullptr, nullptr);
 }
 
+ui::ExerciseWindow* WindowFactory::createExerciseWindow() {
+    return nullptr;
+}
+
 ui::StatisticsWindow* WindowFactory::createStatisticsWindow() {
     return new ui::StatisticsWindow(nullptr);
 }
