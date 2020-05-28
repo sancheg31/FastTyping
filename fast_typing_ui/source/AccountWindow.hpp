@@ -2,8 +2,14 @@
 
 #include <QMainWindow>
 
-class UserAccountInController;
-class UserAccountOutController;
+namespace FT {
+namespace controllers {
+
+class AccountInController;
+class AccountOutController;
+
+} //controllers
+} //FT
 
 namespace FT {
 namespace ui {
@@ -14,7 +20,8 @@ class AccountWindow : public QMainWindow
     Q_OBJECT
     Q_DISABLE_COPY_MOVE(AccountWindow)
 public:
-    AccountWindow(UserAccountInController*, UserAccountOutController*, QWidget *parent = nullptr);
+    AccountWindow(controllers::AccountInController*,
+                  controllers::AccountOutController*, QWidget *parent = nullptr);
     virtual ~AccountWindow() override;
 
 private slots:
@@ -26,8 +33,8 @@ private:
     class Implementation;
     QScopedPointer<Implementation> impl;
 
-    UserAccountInController* inController;
-    UserAccountOutController* outController;
+    controllers::AccountInController* inController;
+    controllers::AccountOutController* outController;
 };
 
 

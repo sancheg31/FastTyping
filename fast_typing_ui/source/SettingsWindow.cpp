@@ -9,6 +9,7 @@
 
 #include <algorithm>
 
+
 namespace FT {
 namespace ui {
 
@@ -96,7 +97,8 @@ QString SettingsWindow::currentKeyboard() const {
 }
 
 
-SettingsWindow::SettingsWindow(QWidget* parent): QMainWindow(parent) {
+SettingsWindow::SettingsWindow(controllers::SettingsController* cont,
+                               QWidget* parent): QMainWindow(parent), controller(cont) {
     impl.reset(new Implementation(this));
 
     QGridLayout* l = new QGridLayout;

@@ -6,6 +6,14 @@
 #include "ft_lib_global.h"
 
 namespace FT {
+namespace controllers {
+
+class SettingsController;
+
+} //controllers
+} //FT
+
+namespace FT {
 namespace ui {
 
 class SettingsWindow : public QMainWindow
@@ -16,7 +24,7 @@ class SettingsWindow : public QMainWindow
     Q_PROPERTY(QString ui_keyboard READ currentKeyboard WRITE setCurrentKeyboard)
 
 public:
-    explicit SettingsWindow(QWidget *parent = nullptr);
+    explicit SettingsWindow(controllers::SettingsController*, QWidget *parent = nullptr);
     virtual ~SettingsWindow() override;
 
     bool setCurrentStyle(const QString& styleName);
@@ -40,6 +48,8 @@ private:
 
     class Implementation;
     QScopedPointer<Implementation> impl;
+
+    controllers::SettingsController* controller;
 };
 
 } //ui

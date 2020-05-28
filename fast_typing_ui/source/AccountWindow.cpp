@@ -87,8 +87,8 @@ public:
 };
 
 
-AccountWindow::AccountWindow(UserAccountInController* inc,
-                             UserAccountOutController* outc,
+AccountWindow::AccountWindow(controllers::AccountInController* inc,
+                             controllers::AccountOutController* outc,
                              QWidget* parent): QMainWindow(parent), inController(inc), outController(outc) {
     impl.reset(new Implementation(this));
 

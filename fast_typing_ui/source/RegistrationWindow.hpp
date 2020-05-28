@@ -11,7 +11,7 @@ class RegistrationWindow: public QMainWindow
     Q_OBJECT
     Q_DISABLE_COPY_MOVE(RegistrationWindow)
 public:
-    RegistrationWindow(QWidget* parent = nullptr);
+    explicit RegistrationWindow(QWidget* parent = nullptr);
     virtual ~RegistrationWindow();
 
 signals:
