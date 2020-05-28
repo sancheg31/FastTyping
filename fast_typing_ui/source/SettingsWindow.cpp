@@ -38,9 +38,11 @@ public:
            layoutBox->addItem(text);
         });
 
+        styleBox->setCurrentIndex(parent->controller->currentStyleIndex());
         styleBox->setEditable(false);
         styleBox->setDuplicatesEnabled(false);
 
+        layoutBox->setCurrentIndex(parent->controller->currentLayoutIndex());
         layoutBox->setEditable(false);
         layoutBox->setDuplicatesEnabled(false);
 

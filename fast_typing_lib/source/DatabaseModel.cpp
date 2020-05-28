@@ -64,6 +64,7 @@ std::optional<QList<QVariantList>> DatabaseModel::selectRows(const QString& stat
 
     if (!query.prepare(statement) || !query.exec()) {
         qDebug() << "incorrect statement: " << statement;
+        qDebug() << "last error" << query.lastError();
         return {};
     }
 
@@ -86,6 +87,7 @@ bool DatabaseModel::insertRow(const QString& statement, const QVariantMap& value
 
     if (!query.prepare(statement)) {
         qDebug() << "incorrect statement: " << statement;
+        qDebug() << "last error" << query.lastError();
         return false;
     }
 
@@ -96,6 +98,7 @@ bool DatabaseModel::insertRow(const QString& statement, const QVariantMap& value
 
     if (!query.exec()) {
         qDebug() << "incorrect statement: " << statement;
+        qDebug() << "last error" << query.lastError();
         return false;
     }
     query.finish();
@@ -107,6 +110,7 @@ bool DatabaseModel::insertRow(const QString& statement) {
 
     if (!query.prepare(statement) || !query.exec()) {
         qDebug() << "incorrect statement: " << statement;
+        qDebug() << "last error" << query.lastError();
         return false;
     }
     query.finish();

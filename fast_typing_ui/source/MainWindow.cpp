@@ -11,6 +11,7 @@
 
 using namespace FT::controllers;
 using namespace FT::framework;
+
 namespace FT {
 namespace ui {
 
@@ -18,7 +19,6 @@ namespace ui {
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     regController = new RegistrationController();
     accountController = new AccountController();
-    settingsController = new SettingsController();
     slotLoginWindow();
 }
 
@@ -45,12 +45,14 @@ void MainWindow::slotLoginWindow() {
 }
 
 void MainWindow::slotLoginWindow(const QString& login, const QString& password) {
-    qDebug() << "login: " << login << "\npassword: " << password;
+    qDebug() << "\nlogin: " << login << "\npassword: " << password;
     accountController->loadAccountData(login, password);
     slotLoginWindow();
 }
 
 void MainWindow::slotMainWindow() {
+
+    settingsController = new SettingsController(accountController);
 
     QTabWidget* mainw = new QTabWidget();
     mainw->setMovable(true);

@@ -2,6 +2,7 @@
 #include "RegistrationWindow.hpp"
 
 #include <QPushButton>
+#include <QDebug>
 
 #include "VerticalInputBox.hpp"
 #include "TextValidatorContainer.hpp"
@@ -118,6 +119,8 @@ RegistrationWindow::RegistrationWindow(controllers::RegistrationController* cont
 /*virtual*/ RegistrationWindow::~RegistrationWindow() { }
 
 void RegistrationWindow::slotConfirmButtonClicked() {
+
+    qDebug() << "RegistrationWindow::confirmButtonClicked";
 
     if (!controller->isLoginUnique(impl->loginBox->line()->text())) {
         impl->incorrectData->setText("Login is used");

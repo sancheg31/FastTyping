@@ -36,8 +36,8 @@ ui::StatisticsWindow* WindowFactory::createStatisticsWindow(controllers::Statist
     return new ui::StatisticsWindow(cont);
 }
 
-ui::SettingsWindow* WindowFactory::createSettingsWindow(controllers::SettingsController*) {
-    return new ui::SettingsWindow(new controllers::SettingsController);
+ui::SettingsWindow* WindowFactory::createSettingsWindow(controllers::SettingsController* cont) {
+    return new ui::SettingsWindow(cont);
 }
 
 
