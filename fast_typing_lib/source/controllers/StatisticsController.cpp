@@ -29,6 +29,13 @@ public:
         characters = list[0][0].toInt();
         significance = list[0][1].toInt();
         errors = list[0][2].toInt();
+
+        QString selectRegisterDate = QString("SELECT created_at FROM Account WHERE user_id = %1")
+                                     .arg(parent->accountController->accountId());
+
+        auto list2 = data::DatabaseModel::instance().selectRows(selectRegisterDate).value();
+        registerDate = list2[0][0].toString();
+
     }
     StatisticsController* parent;
 
@@ -38,6 +45,7 @@ public:
     int characters;
     int significance;
     int errors;
+    QString registerDate;
 
     QMap<int, QString> loadExerciseTypes() {
 
@@ -84,6 +92,22 @@ StatisticsController::StatisticsController(AccountController* cont,
 
 
 /*virtual*/ StatisticsController::~StatisticsController() { }
+
+int StatisticsController::characters() const {
+    return impl->characters;
+}
+
+int StatisticsController::errors() const {
+    return impl->errors;
+}
+
+int StatisticsController::significance() const {
+    return impl->significance;
+}
+
+QString StatisticsController::registerDate() const {
+    return impl->registerDate;
+}
 
 
 } //controllers
