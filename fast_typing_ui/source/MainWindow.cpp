@@ -2,7 +2,6 @@
 #include "MainWindow.hpp"
 #include "WindowFactory.hpp"
 
-#include <QStackedWidget>
 #include <QTabWidget>
 #include <QDebug>
 
@@ -15,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 }
 
 void MainWindow::slotRegisterWindow() {
-    ui::RegistrationWindow* regWindow = framework::WindowFactory::createRegistrationWindow();
+    QMainWindow* regWindow = (QMainWindow*)framework::WindowFactory::createRegistrationWindow();
     setCentralWidget(regWindow);
     setFixedSize(regWindow->size());
     setWindowTitle(regWindow->windowTitle());
@@ -23,7 +22,7 @@ void MainWindow::slotRegisterWindow() {
 }
 
 void MainWindow::slotLoginWindow() {
-    ui::LoginWindow* logWindow = framework::WindowFactory::createLoginWindow();
+    QMainWindow* logWindow = (QMainWindow*)framework::WindowFactory::createLoginWindow();
     setCentralWidget(logWindow);
     setFixedSize(logWindow->size());
     setWindowTitle(logWindow->windowTitle());
@@ -32,21 +31,21 @@ void MainWindow::slotLoginWindow() {
 }
 
 void MainWindow::slotMainWindow() {
-    QStackedWidget* stw = new QStackedWidget();
+
     QTabWidget* mainw = new QTabWidget();
     mainw->setMovable(true);
-    mainw->setWindowTitle("tabs");
-    mainw->addTab((QMainWindow*)framework::WindowFactory::createAccountWindow(), "Account");
-    mainw->addTab(new QWidget(), "Lessons");
-    mainw->addTab((QMainWindow*)framework::WindowFactory::createStatisticsWindow(), "Statistics");
-    mainw->addTab((QMainWindow*)framework::WindowFactory::createSettingsWindow(), "Settings");
+    mainw->addTab((QMainWindow*)framework::WindowFactory::createAccountWindow(), tr("Account"));
+    mainw->addTab((QMainWindow*)framework::WindowFactory::createExerciseWindow(), tr("Exercise"));
+    mainw->addTab((QMainWindow*)framework::WindowFactory::createStatisticsWindow(), tr("Statistics"));
+    mainw->addTab((QMainWindow*)framework::WindowFactory::createSettingsWindow(), tr("Settings"));
+
     takeCentralWidget();
     setCentralWidget(mainw);
     setSizePolicy(mainw->sizePolicy());
-    setMinimumSize(mainw->minimumSize());
+    setMinimumSize(0, 0);
     setMaximumSize(mainw->maximumSize());
     resize(mainw->size());
-    setWindowTitle(mainw->windowTitle());
+    setWindowTitle("Tabs");
 }
 
 

@@ -13,19 +13,29 @@ INCLUDEPATH += source
 INCLUDEPATH += ../fast_typing_lib/source
 
 SOURCES += \
+    source/AccountWindow.cpp \
     source/HorizontalInputBox.cpp \
     source/InputBox.cpp \
     source/LoginWindow.cpp \
+    source/MainWindow.cpp \
     source/RegistrationWindow.cpp \
+    source/SettingsWindow.cpp \
+    source/StatisticsWindow.cpp \
     source/VerticalInputBox.cpp \
+    source/WindowFactory.cpp \
     source/main.cpp
 
 HEADERS += \
+    source/AccountWindow.hpp \
     source/HorizontalInputBox.hpp \
     source/InputBox.hpp \
     source/LoginWindow.hpp \
+    source/MainWindow.hpp \
     source/RegistrationWindow.hpp \
-    source/VerticalInputBox.hpp
+    source/SettingsWindow.hpp \
+    source/StatisticsWindow.hpp \
+    source/VerticalInputBox.hpp \
+    source/WindowFactory.hpp
 
 TRANSLATIONS += \
     fast_typing_ui_en_US.ts

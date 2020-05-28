@@ -1,6 +1,8 @@
 
 #include "SettingsController.hpp"
 
+#include <QDebug>
+
 #include <algorithm>
 
 #include "DatabaseModel.hpp"
@@ -13,9 +15,13 @@ class SettingsController::Implementation
 public:
     Implementation(SettingsController* obj): parent(obj) {
         styles = loadStyles();
+        curStyleIndex = styles.indexOf(loadAccountStyle());
+        qDebug() << styles;
+        qDebug() << curStyleIndex << ' ' << styles[curStyleIndex];
         layouts = loadLayouts();
-        curStyleIndex = styles.indexOf(loadUserLayout());
-        curLayoutIndex = styles.indexOf(loadUserStyle());
+        curLayoutIndex = layouts.indexOf(loadAccountLayout());
+        qDebug() << layouts;
+        qDebug() << curLayoutIndex << ' ' << layouts[curLayoutIndex];
     }
 
     SettingsController* parent;
@@ -49,20 +55,22 @@ public:
     }
 
     //returns account's layout saved in AccountSettings
-    QString loadUserLayout() {
+    QString loadAccountLayout() {
         const static QString query = "SELECT name FROM "
                                      "KeyboardLayout INNER JOIN AccountSettings "
                                      "ON KeyboardLayout.id = AccountSettings.keyboard_layout_id";
         auto list = data::DatabaseModel::instance().selectRows(query).value();
+        qDebug() << list;
         return qvariant_cast<QString>(list[0][0]);
     }
 
     //returns account's operating system name saved in AccountSettings
-    QString loadUserStyle() {
+    QString loadAccountStyle() {
         const static QString query = "SELECT type FROM "
                                      "OperatingSystem INNER JOIN AccountSettings "
-                                     "ON OperatingSystem.id = AccountSettings.keyboard_layout_id";
+                                     "ON OperatingSystem.id = AccountSettings.operating_system_id";
         auto list = data::DatabaseModel::instance().selectRows(query).value();
+        qDebug() << list;
         return qvariant_cast<QString>(list[0][0]);
     }
 
@@ -81,6 +89,7 @@ void SettingsController::setCurrentStyle(const QString& style) {
     if (index != -1 && (std::size_t)index != impl->curStyleIndex) {
         std::size_t temp = impl->curStyleIndex;
         impl->curStyleIndex = index;
+        qDebug() << "current style changed: " << impl->styles[index];
         emit currentStyleChanged(impl->styles[index], impl->styles[temp]);
     }
 }
@@ -90,6 +99,7 @@ void SettingsController::setCurrentLayout(const QString& layout) {
     if (index != -1 && (std::size_t)index != impl->curLayoutIndex) {
         std::size_t temp = impl->curLayoutIndex;
         impl->curLayoutIndex = index;
+        qDebug() << "current layout changed: " << impl->layouts[index];
         emit currentLayoutChanged(impl->layouts[index], impl->layouts[temp]);
     }
 }
