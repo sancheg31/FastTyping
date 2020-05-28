@@ -16,7 +16,6 @@ class RegistrationController::Implementation
 public:
     Implementation(RegistrationController* obj): parent(obj) { }
 
-    int accountId{-1};
     RegistrationController* parent;
 };
 
@@ -32,19 +31,17 @@ bool RegistrationController::isEmailUnique(const QString& email) const {
     return list.isEmpty();
 }
 
-
-
 int RegistrationController::createAccount(const QString& login,
                                           const QString& email,
                                           const QString& password) const {
 
     QString statement = QString("INSERT INTO Account (login, email, password, created_at)"
-                                "VALUES (:login, :email, :password, :created_at");
+                                " VALUES (:login, :email, :password, :created_at)");
     QVariantMap map{
                     {QString(":login"), login},
                     {QString(":email"), email},
                     {QString(":password"), password},
-                    {QString(":created_at"), QDate::currentDate().toString()}
+                    {QString(":created_at"), QDate::currentDate().toString(Qt::DateFormat::ISODate)}
                    };
     bool created = data::DatabaseModel::instance().insertRow(statement, map);
     if (!created)
@@ -52,12 +49,7 @@ int RegistrationController::createAccount(const QString& login,
 
     QString selectId = QString("SELECT id FROM Account WHERE login = \"%1\"").arg(login);
     auto list = data::DatabaseModel::instance().selectRows(selectId).value();
-    impl->accountId =  qvariant_cast<int>(list[0][0]);
-    return impl->accountId;
-}
-
-int RegistrationController::accountId() const {
-    return impl->accountId;
+    return qvariant_cast<int>(list[0][0]);
 }
 
 RegistrationController::RegistrationController(QObject* parent): QObject(parent) {
