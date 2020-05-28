@@ -21,7 +21,7 @@ public:
         cont.insert(loginKey, loginValue);
 
         QString emailKey("email");
-        QString emailValue("([A-Za-z0-9_]+(\\.[A-Za-z0-9_])*\\.@[A-Za-z0-9_]+(\\.[A-Za-z0-9_])+)");
+        QString emailValue("([A-Za-z0-9_]+(\\.[A-Za-z0-9_]+)*@[A-Za-z0-9_]+(\\.[A-Za-z0-9_]+)*)");
         assert(QRegExp(emailValue).isValid());
         cont.insert(emailKey, emailValue);
 
