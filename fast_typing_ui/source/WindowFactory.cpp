@@ -16,8 +16,8 @@ namespace FT {
 namespace framework {
 
 
-ui::LoginWindow* WindowFactory::createLoginWindow(controllers::AccountController*) {
-    return new ui::LoginWindow();
+ui::LoginWindow* WindowFactory::createLoginWindow(controllers::AccountController* cont) {
+    return new ui::LoginWindow(cont);
 }
 
 ui::RegistrationWindow* WindowFactory::createRegistrationWindow(controllers::RegistrationController* cont) {

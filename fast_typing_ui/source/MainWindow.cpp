@@ -30,15 +30,24 @@ void MainWindow::slotRegisterWindow() {
     setFixedSize(regWindow->size());
     setWindowTitle(regWindow->windowTitle());
     connect(regWindow, SIGNAL(loginState()), SLOT(slotLoginWindow()));
+    connect(regWindow, SIGNAL(loginState(QString, QString)), SLOT(slotLoginWindow(QString, QString)));
 }
 
 void MainWindow::slotLoginWindow() {
-    QMainWindow* logWindow = (QMainWindow*)WindowFactory::createLoginWindow(nullptr);
+    QMainWindow* logWindow = (QMainWindow*)
+                             WindowFactory::createLoginWindow(accountController);
+
     setCentralWidget(logWindow);
     setFixedSize(logWindow->size());
     setWindowTitle(logWindow->windowTitle());
     connect(logWindow, SIGNAL(registerState()), SLOT(slotRegisterWindow()));
     connect(logWindow, SIGNAL(mainState()), SLOT(slotMainWindow()));
+}
+
+void MainWindow::slotLoginWindow(const QString& login, const QString& password) {
+    qDebug() << "login: " << login << "\npassword: " << password;
+    accountController->loadAccountData(login, password);
+    slotLoginWindow();
 }
 
 void MainWindow::slotMainWindow() {

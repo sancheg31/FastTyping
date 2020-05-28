@@ -24,6 +24,7 @@ public:
 public slots:
     void slotRegisterWindow();
     void slotLoginWindow();
+    void slotLoginWindow(const QString& login, const QString& password);
     void slotMainWindow();
 
 
