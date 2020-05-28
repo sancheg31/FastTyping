@@ -2,6 +2,9 @@
 
 #include "StatisticsWindow.hpp"
 
+#include "controllers/StatisticsController.hpp"
+#include "ExerciseTypePieChart.hpp"
+
 #include <QLabel>
 #include <QPushButton>
 
@@ -11,8 +14,6 @@
 namespace FT {
 namespace ui {
 
-
-class ExerciseTypePieChart;
 class ExercisePointBarChart;
 
 class StatisticsWindow::Implementation
@@ -25,7 +26,10 @@ public:
         titleLabel->setWordWrap(true);
         titleLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 
-
+        registerDateValue->setText(parent->controller->registerDate());
+        charactersValue->setText(QString(parent->controller->characters()));
+        significanceValue->setText(QString(parent->controller->significance()));
+        errorsValue->setText(QString(parent->controller->errors()));
         //rewrite labels to be appropriate form
     }
 
@@ -34,16 +38,16 @@ public:
     QLabel* titleLabel{new QLabel("Statistics")};
 
     QLabel* registerDateText{new QLabel("Register Date:")};
-    QLabel* registerDateValue{new QLabel("0")};
+    QLabel* registerDateValue{new QLabel()};
 
-    QLabel* timeSpentText{new QLabel("Time spent: ")};
-    QLabel* timeSpentValue{new QLabel("10")};
+    QLabel* charactersText{new QLabel("Characters: ")};
+    QLabel* charactersValue{new QLabel()};
 
-    QLabel* lessonsTakenText{new QLabel("Exercise taken:")};
-    QLabel* lessonsTakenValue{new QLabel("100")};
+    QLabel* significanceText{new QLabel("Significance: ")};
+    QLabel* significanceValue{new QLabel()};
 
-    QLabel* errorRateText{new QLabel("Error rate:")};
-    QLabel* errorRateValue{new QLabel("1000")};
+    QLabel* errorsText{new QLabel("Errors: ")};
+    QLabel* errorsValue{new QLabel()};
 
     QPushButton* chart1{new QPushButton("chart1")};
     QPushButton* chart2{new QPushButton("chart2")};
@@ -76,8 +80,8 @@ StatisticsWindow::StatisticsWindow(controllers::StatisticsController* cont,
     mainl->addWidget(datew);
 
     QHBoxLayout* timel = new QHBoxLayout();
-    timel->addWidget(impl->timeSpentText);
-    timel->addWidget(impl->timeSpentValue);
+    timel->addWidget(impl->charactersText);
+    timel->addWidget(impl->charactersValue);
     timel->setSpacing(8);
     timel->setContentsMargins(0, 0, 0, 0);
     timel->setSizeConstraint(QLayout::SetFixedSize);
@@ -87,8 +91,8 @@ StatisticsWindow::StatisticsWindow(controllers::StatisticsController* cont,
     mainl->addWidget(timew);
 
     QHBoxLayout* lessonsl = new QHBoxLayout();
-    lessonsl->addWidget(impl->lessonsTakenText);
-    lessonsl->addWidget(impl->lessonsTakenValue);
+    lessonsl->addWidget(impl->significanceText);
+    lessonsl->addWidget(impl->significanceValue);
     lessonsl->setSpacing(8);
     lessonsl->setContentsMargins(0, 0, 0, 0);
     lessonsl->setSizeConstraint(QLayout::SetFixedSize);
@@ -98,8 +102,8 @@ StatisticsWindow::StatisticsWindow(controllers::StatisticsController* cont,
     mainl->addWidget(lessonsw);
 
     QHBoxLayout* errorl = new QHBoxLayout();
-    errorl->addWidget(impl->errorRateText);
-    errorl->addWidget(impl->errorRateValue);
+    errorl->addWidget(impl->errorsText);
+    errorl->addWidget(impl->errorsValue);
     errorl->setSpacing(8);
     errorl->setContentsMargins(0, 0, 0, 0);
     errorl->setSizeConstraint(QLayout::SetFixedSize);
