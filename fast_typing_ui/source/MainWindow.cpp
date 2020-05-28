@@ -2,6 +2,8 @@
 #include "MainWindow.hpp"
 #include "WindowFactory.hpp"
 
+#include <QStackedWidget>
+#include <QTabWidget>
 #include <QDebug>
 
 namespace FT {
@@ -30,13 +32,15 @@ void MainWindow::slotLoginWindow() {
 }
 
 void MainWindow::slotMainWindow() {
+    QStackedWidget* stw = new QStackedWidget();
     QTabWidget* mainw = new QTabWidget();
+    mainw->setMovable(true);
     mainw->setWindowTitle("tabs");
     mainw->addTab((QMainWindow*)framework::WindowFactory::createAccountWindow(), "Account");
     mainw->addTab(new QWidget(), "Lessons");
     mainw->addTab((QMainWindow*)framework::WindowFactory::createStatisticsWindow(), "Statistics");
     mainw->addTab((QMainWindow*)framework::WindowFactory::createSettingsWindow(), "Settings");
-    qDebug() << "success: " << takeCentralWidget();
+    takeCentralWidget();
     setCentralWidget(mainw);
     setSizePolicy(mainw->sizePolicy());
     setMinimumSize(mainw->minimumSize());

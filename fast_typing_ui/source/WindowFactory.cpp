@@ -8,6 +8,8 @@
 #include "RegistrationWindow.hpp"
 #include "SettingsWindow.hpp"
 
+#include "controllers/SettingsController.hpp"
+
 namespace FT {
 namespace framework {
 
@@ -29,7 +31,7 @@ ui::StatisticsWindow* WindowFactory::createStatisticsWindow() {
 }
 
 ui::SettingsWindow* WindowFactory::createSettingsWindow() {
-    return new ui::SettingsWindow(nullptr);
+    return new ui::SettingsWindow(new controllers::SettingsController);
 }
 
 

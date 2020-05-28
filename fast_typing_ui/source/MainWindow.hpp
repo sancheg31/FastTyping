@@ -1,8 +1,6 @@
 #pragma once
 
 #include <QMainWindow>
-#include "LoginWindow.hpp"
-#include "RegistrationWindow.hpp"
 
 namespace FT {
 namespace ui {

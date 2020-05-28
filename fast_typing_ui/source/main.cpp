@@ -1,7 +1,5 @@
 
 
-#include "LoginWindow.hpp"
-#include "RegistrationWindow.hpp"
 #include "MainWindow.hpp"
 
 #include <QtWidgets>

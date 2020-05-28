@@ -20,9 +20,10 @@ class StatisticsWindow::Implementation
 public:
     Implementation(StatisticsWindow* obj): parent(obj) {
 
-        titleLabel->setFont(QFont("Calibri", 30, 100));
-        titleLabel->setAlignment(Qt::AlignCenter);
+        titleLabel->setFont(QFont("Calibri", 30, 50));
+        titleLabel->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
         titleLabel->setWordWrap(true);
+        titleLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 
 
         //rewrite labels to be appropriate form
@@ -58,9 +59,8 @@ StatisticsWindow::StatisticsWindow(controllers::StatisticsController* cont,
     impl.reset(new Implementation(this));
 
     QVBoxLayout* mainl = new QVBoxLayout();
-    //mainl->setSizeConstraint(QLayout::SetFixedSize);
     mainl->setSpacing(4);
-    mainl->setContentsMargins(15, 15, 15, 30);
+    mainl->setContentsMargins(15, 15, 15, 20);
 
     mainl->addWidget(impl->titleLabel, Qt::AlignLeft);
 

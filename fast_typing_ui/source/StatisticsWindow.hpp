@@ -17,6 +17,7 @@ namespace ui {
 class StatisticsWindow : public QMainWindow
 {
     Q_OBJECT
+    Q_DISABLE_COPY_MOVE(StatisticsWindow)
 public:
     explicit StatisticsWindow(controllers::StatisticsController*, QWidget *parent = nullptr);
     virtual ~StatisticsWindow() override;
