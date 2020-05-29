@@ -2,13 +2,32 @@
 
 #include <QObject>
 
-class ExerciseController : public QObject
+#include "ft_lib_global.h"
+
+namespace FT {
+namespace controllers {
+
+class AccountController;
+
+class FT_LIB_EXPORT ExerciseController : public QObject
 {
     Q_OBJECT
-public:
-    explicit ExerciseController(QObject *parent = nullptr);
+    Q_DISABLE_COPY_MOVE(ExerciseController)
 
-signals:
+public:
+    explicit ExerciseController(AccountController*, QObject *parent = nullptr);
+    virtual ~ExerciseController() override;
+
+    QStringList exerciseTypes() const;
+    QStringList exerciseNames(const QString& type) const;
+
+private:
+    class Implementation;
+    QScopedPointer<Implementation> impl;
+    AccountController* accountController;
 
 };
+
+} //controllers
+} //FT
 
