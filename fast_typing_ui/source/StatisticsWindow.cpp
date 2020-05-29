@@ -4,6 +4,7 @@
 
 #include "controllers/StatisticsController.hpp"
 #include "ExerciseTypePieChart.hpp"
+#include "ExercisePointsBarChart.hpp"
 
 #include <QLabel>
 #include <QPushButton>
@@ -13,8 +14,6 @@
 
 namespace FT {
 namespace ui {
-
-class ExercisePointBarChart;
 
 class StatisticsWindow::Implementation
 {
@@ -27,10 +26,13 @@ public:
         titleLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 
         registerDateValue->setText(parent->controller->registerDate());
-        charactersValue->setText(QString(parent->controller->characters()));
-        significanceValue->setText(QString(parent->controller->significance()));
-        errorsValue->setText(QString(parent->controller->errors()));
+        charactersValue->setText(QString("%1").arg(parent->controller->characters()));
+        significanceValue->setText(QString("%1").arg(parent->controller->significance()));
+        errorsValue->setText(QString("%1").arg(parent->controller->errors()));
         //rewrite labels to be appropriate form
+
+        QObject::connect(chart1, SIGNAL(clicked()), parent, SLOT(slotFirstChartClicked()));
+        QObject::connect(chart2, SIGNAL(clicked()), parent, SLOT(slotSecondChartClicked()));
     }
 
     StatisticsWindow* parent;
@@ -52,11 +54,23 @@ public:
     QPushButton* chart1{new QPushButton("chart1")};
     QPushButton* chart2{new QPushButton("chart2")};
 
-    ExerciseTypePieChart* pieChart;
-    ExercisePointBarChart* barChart;
-
 
 };
+
+void StatisticsWindow::slotFirstChartClicked() {
+    ExerciseTypePieChart* chart = new ExerciseTypePieChart(controller);
+    chart->setAttribute(Qt::WA_DeleteOnClose);
+    chart->setWindowTitle("Exercise Types Taken");
+    chart->show();
+}
+
+void StatisticsWindow::slotSecondChartClicked() {
+    ExercisePointsBarChart* chart = new ExercisePointsBarChart(controller);
+    chart->setAttribute(Qt::WA_DeleteOnClose);
+    chart->setWindowTitle("Recent Exercises");
+    chart->show();
+}
+
 
 StatisticsWindow::StatisticsWindow(controllers::StatisticsController* cont,
                                    QWidget* parent): QMainWindow(parent), controller(cont) {
@@ -131,6 +145,7 @@ StatisticsWindow::StatisticsWindow(controllers::StatisticsController* cont,
 }
 
 StatisticsWindow::~StatisticsWindow() { }
+
 
 
 

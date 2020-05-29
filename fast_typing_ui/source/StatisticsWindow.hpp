@@ -22,6 +22,10 @@ public:
     explicit StatisticsWindow(controllers::StatisticsController*, QWidget *parent = nullptr);
     virtual ~StatisticsWindow() override;
 
+private slots:
+    void slotFirstChartClicked();
+    void slotSecondChartClicked();
+
 private:
 
     class Implementation;
