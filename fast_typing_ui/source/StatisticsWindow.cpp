@@ -51,8 +51,8 @@ public:
     QLabel* errorsText{new QLabel("Errors: ")};
     QLabel* errorsValue{new QLabel()};
 
-    QPushButton* chart1{new QPushButton("chart1")};
-    QPushButton* chart2{new QPushButton("chart2")};
+    QPushButton* chart1{new QPushButton("Pie")};
+    QPushButton* chart2{new QPushButton("Bar")};
 
 
 };
