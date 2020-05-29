@@ -35,7 +35,7 @@ public:
 
         QMap<int, QString> result;
         std::for_each(list.begin(), list.end(), [&result](auto & l) {
-            result.insert(l[0][0].toInt(), l[0][1].toString());
+            result.insert(l[0].toInt(), l[1].toString());
         });
         return result;
     }

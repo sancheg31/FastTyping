@@ -13,6 +13,7 @@ INCLUDEPATH += source
 INCLUDEPATH += ../fast_typing_lib/source
 
 SOURCES += \
+    source/ExercisePointsBarChart.cpp \
     source/ExerciseTypePieChart.cpp \
     source/AccountWindow.cpp \
     source/HorizontalInputBox.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
     source/main.cpp
 
 HEADERS += \
+    source/ExercisePointsBarChart.hpp \
     source/ExerciseTypePieChart.hpp \
     source/AccountWindow.hpp \
     source/HorizontalInputBox.hpp \

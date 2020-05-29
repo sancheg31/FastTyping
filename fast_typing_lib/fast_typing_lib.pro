@@ -17,6 +17,7 @@ HEADERS += \
     source/DatabaseModel.hpp \
     source/TextValidatorContainer.hpp \
     source/controllers/AccountController.hpp \
+    source/controllers/ExerciseController.hpp \
     source/controllers/RegistrationController.hpp \
     source/controllers/SettingsController.hpp \
     source/controllers/StatisticsController.hpp \
@@ -26,6 +27,7 @@ SOURCES += \
     source/DatabaseModel.cpp \
     source/TextValidatorContainer.cpp \
     source/controllers/AccountController.cpp \
+    source/controllers/ExerciseController.cpp \
     source/controllers/RegistrationController.cpp \
     source/controllers/SettingsController.cpp \
     source/controllers/StatisticsController.cpp

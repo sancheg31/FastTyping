@@ -1,6 +1,8 @@
 
 #include "ExerciseTypePieChart.hpp"
 
+#include "controllers/StatisticsController.hpp"
+
 #include <QPieSeries>
 #include <QPieSlice>
 #include <QChart>
@@ -16,10 +18,22 @@ class ExerciseTypePieChart::Implementation
 public:
     Implementation(ExerciseTypePieChart* obj): parent(obj) {
 
-        series->setLabelsPosition(QPieSlice::LabelInsideNormal);
+        series->setLabelsPosition(QPieSlice::LabelOutside);
+
+        auto pieValues = parent->controller->exerciseNamesAndCounts();
+        QStringList names = pieValues.keys();
+
+        for (auto it = names.begin(); it != names.end(); ++it) {
+            QPieSlice* slice = series->append(*it, pieValues.value(*it));
+            if (slice->value() > 0) {
+                slice->setLabelVisible(true);
+            }
+        }
 
         chart->addSeries(series);
+        chart->legend()->setVisible(false);
         chart->setTitle("Exercise Types Taken");
+        chart->setTitleFont(QFont("Arial", 20, 10));
         chartView->setRenderHint(QPainter::Antialiasing);
 
     }
@@ -35,6 +49,9 @@ public:
 ExerciseTypePieChart::ExerciseTypePieChart(controllers::StatisticsController* cont,
                                            QWidget *parent) : QMainWindow(parent), controller(cont) {
     impl.reset(new Implementation(this));
+    setCentralWidget(impl->chartView);
+    setMinimumSize(impl->chartView->size());
+    resize(impl->chartView->size());
 }
 
 ExerciseTypePieChart::~ExerciseTypePieChart() { }
