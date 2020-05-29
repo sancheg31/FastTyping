@@ -29,6 +29,8 @@ public slots:
 
     void slotApplicationStyleChanged(const QString& newStyle);
 
+    void slotPrintToExcel();
+
 
 private:
     controllers::RegistrationController* regController;

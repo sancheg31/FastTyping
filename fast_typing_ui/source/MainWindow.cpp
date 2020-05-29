@@ -9,10 +9,19 @@
 #include "controllers/StatisticsController.hpp"
 #include "controllers/ExerciseController.hpp"
 
+
+
 #include <QStyleFactory>
 #include <QTabWidget>
 #include <QDebug>
 #include <QStyle>
+#include <QMenuBar>
+
+#include <ActiveQt/qaxobject.h>
+#include <ActiveQt/qaxbase.h>
+#include <QVariant>
+
+#include "DatabaseModel.hpp"
 
 using namespace FT::controllers;
 using namespace FT::framework;
@@ -57,6 +66,9 @@ void MainWindow::slotLoginWindow(const QString& login, const QString& password) 
 
 void MainWindow::slotMainWindow() {
 
+    QMenu* excel = menuBar()->addMenu("excel");
+    excel->addAction("print to excel", this, SLOT(slotPrintToExcel()));
+
     settingsController = new SettingsController(accountController);
     connect(settingsController, SIGNAL(currentStyleChanged(QString, QString)),
             this, SLOT(slotApplicationStyleChanged(QString)));
@@ -92,6 +104,40 @@ void MainWindow::slotApplicationStyleChanged(const QString& newStyle) {
     } else if (newStyle == "Windows") {
         qApp->setStyle(factory->create("Windows"));
     }
+}
+
+
+
+void MainWindow::slotPrintToExcel() {
+
+    QString statement = "SELECT login, email, password FROM Account";
+    auto result = FT::data::DatabaseModel::instance().selectRows(statement).value();
+
+    qDebug() << result;
+
+    QAxObject *mExcel = new QAxObject( "Excel.Application", this);
+    QAxObject *workbooks = mExcel->querySubObject("Workbooks");
+    QAxObject *workbook = workbooks->querySubObject("Open(const QString&)", "D:\\1.xlsx");
+    QAxObject *mSheets = workbook->querySubObject("Sheets");
+    QAxObject *StatSheet = mSheets->querySubObject( "Item(const QVariant&)", QVariant("Sheet1") );
+
+    for (int row = 1; row <= result.size(); ++row)
+        for (int col = 1; col <= result[row-1].size(); ++col) {
+            QAxObject* cell = StatSheet->querySubObject("Cells(QVariant,QVariant)", row, col);
+            cell->setProperty("Value", QVariant(result[row - 1][col - 1]));
+            delete cell;
+        }
+
+    workbook->dynamicCall("Save()" );
+    workbook->dynamicCall("Close()");
+    mExcel->dynamicCall("Quit ()");
+
+    delete StatSheet;
+    delete mSheets;
+    delete workbook;
+    delete workbooks;
+    delete mExcel;
+
 }
 
 

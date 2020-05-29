@@ -4,6 +4,7 @@ include(../qmake_destination_path.pri)
 
 CONFIG += c++17 qt link_prl
 QT += sql core gui widgets charts
+QT += axcontainer
 
 
 TEMPLATE = app
