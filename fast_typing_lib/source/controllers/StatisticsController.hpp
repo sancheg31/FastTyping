@@ -2,12 +2,14 @@
 
 #include <QObject>
 
+#include "ft_lib_global.h"
+
 namespace FT {
 namespace controllers {
 
 class AccountController;
 
-class StatisticsController : public QObject
+class FT_LIB_EXPORT StatisticsController : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY_MOVE(StatisticsController)
@@ -28,6 +30,7 @@ public:
     QString registerDate() const;
 
     QMap<QString, int> exerciseNamesAndCounts() const;
+    QList<QVariantList> exercisesTaken() const;
 
 private:
     class Implementation;

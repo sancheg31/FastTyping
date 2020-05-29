@@ -6,7 +6,7 @@
 
 #include <QStringList>
 #include <QVector>
-#include <QMap>
+#include <QDebug>
 
 #include <algorithm>
 
@@ -21,6 +21,9 @@ public:
         exerciseTakenPerType = loadExerciseTakenPerType(exerciseTypes.keys(),
                                                         parent->accountController->accountId());
 
+        qDebug() << exerciseTypes;
+        qDebug() << exerciseTakenPerType;
+
         QString selectAccountData = QString("SELECT characters, significance, errors FROM AccountStatistics "
                                             "WHERE user_id = %1").arg(parent->accountController->accountId());
 
@@ -30,7 +33,9 @@ public:
         significance = list[0][1].toInt();
         errors = list[0][2].toInt();
 
-        QString selectRegisterDate = QString("SELECT created_at FROM Account WHERE user_id = %1")
+        qDebug() << characters << " " << significance << " " << errors;
+
+        QString selectRegisterDate = QString("SELECT created_at FROM Account WHERE id = %1")
                                      .arg(parent->accountController->accountId());
 
         auto list2 = data::DatabaseModel::instance().selectRows(selectRegisterDate).value();
@@ -82,6 +87,18 @@ QMap<QString, int> StatisticsController::exerciseNamesAndCounts() const {
         result.insert(impl->exerciseTypes.value(id), impl->exerciseTakenPerType.value(id));
     });
 
+    return result;
+}
+
+QList<QVariantList> StatisticsController::exercisesTaken() const {
+
+    QString statement = QString("SELECT chars, duration, errors, points, date "
+                                "FROM AccountExerciseHistory "
+                                "WHERE user_id = %1 "
+                                "ORDER BY date LIMIT 10").arg(accountController->accountId());
+
+    QList<QVariantList> result = data::DatabaseModel::instance().selectRows(statement).value();
+    qDebug() << result;
     return result;
 }
 
