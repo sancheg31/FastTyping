@@ -16,6 +16,7 @@ SOURCES += \
     source/ExercisePointsBarChart.cpp \
     source/ExerciseTypePieChart.cpp \
     source/AccountWindow.cpp \
+    source/ExerciseWindow.cpp \
     source/HorizontalInputBox.cpp \
     source/InputBox.cpp \
     source/LoginWindow.cpp \
@@ -31,6 +32,7 @@ HEADERS += \
     source/ExercisePointsBarChart.hpp \
     source/ExerciseTypePieChart.hpp \
     source/AccountWindow.hpp \
+    source/ExerciseWindow.hpp \
     source/HorizontalInputBox.hpp \
     source/InputBox.hpp \
     source/LoginWindow.hpp \

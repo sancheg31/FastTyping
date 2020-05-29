@@ -27,12 +27,15 @@ public slots:
     void slotLoginWindow(const QString& login, const QString& password);
     void slotMainWindow();
 
+    void slotApplicationStyleChanged(const QString& newStyle);
+
 
 private:
     controllers::RegistrationController* regController;
     controllers::AccountController* accountController;
     controllers::SettingsController* settingsController;
     controllers::StatisticsController* statController;
+    controllers::ExerciseController* exController;
 };
 
 } //ui
