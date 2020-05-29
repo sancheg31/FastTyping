@@ -34,7 +34,7 @@ public:
     static ui::LoginWindow* createLoginWindow(controllers::AccountController* cont);
     static ui::RegistrationWindow* createRegistrationWindow(controllers::RegistrationController*);
     static ui::AccountWindow* createAccountWindow(controllers::AccountController*);
-    static ui::ExerciseWindow* createExerciseWindow();
+    static ui::ExerciseWindow* createExerciseWindow(controllers::ExerciseController*);
     static ui::StatisticsWindow* createStatisticsWindow(controllers::StatisticsController*);
     static ui::SettingsWindow* createSettingsWindow(controllers::SettingsController*);
 

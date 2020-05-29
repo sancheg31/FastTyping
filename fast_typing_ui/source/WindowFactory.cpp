@@ -6,11 +6,13 @@
 #include "LoginWindow.hpp"
 #include "StatisticsWindow.hpp"
 #include "RegistrationWindow.hpp"
+#include "ExerciseWindow.hpp"
 #include "SettingsWindow.hpp"
 
 #include "controllers/SettingsController.hpp"
 #include "controllers/AccountController.hpp"
 #include "controllers/RegistrationController.hpp"
+#include "controllers/ExerciseController.hpp"
 
 namespace FT {
 namespace framework {
@@ -28,8 +30,8 @@ ui::AccountWindow* WindowFactory::createAccountWindow(controllers::AccountContro
     return new ui::AccountWindow(cont);
 }
 
-ui::ExerciseWindow* WindowFactory::createExerciseWindow() {
-    return nullptr;
+ui::ExerciseWindow* WindowFactory::createExerciseWindow(controllers::ExerciseController* cont) {
+    return new ui::ExerciseWindow(cont);
 }
 
 ui::StatisticsWindow* WindowFactory::createStatisticsWindow(controllers::StatisticsController* cont) {
